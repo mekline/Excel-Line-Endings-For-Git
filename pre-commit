@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+#
+# Pre-commit hooks
+echo "Running newline test..."
+
+
+#Replace compound carriage returns with \n, THEN replace bare carriage return with \n
+tr '\r\n' '\n' < Headbop_Data.csv > Headbop_Data2.csv
+tr '\r' '\n' < Headbop_Data2.csv > Headbop_Data3.csv
+tr '\n\n' '\n' < Headbop_Data3.csv > Headbop_Data4.csv
+
+#Did that need to be done? If not, clean up dummy files & continue; otherwise clean up and stop this commit
+if diff Headbop_Data.csv Headbop_Data4.csv >/dev/null ; then
+	rm Headbop_Data2.csv
+	rm Headbop_Data3.csv
+	rm Headbop_Data4.csv
+    echo "Data file has clean newlines, proceed" && exit 0 #exit 0 allows the commit to proceed
+else
+	cp Headbop_Data4.csv Headbop_Data.csv
+	rm Headbop_Data2.csv
+	rm Headbop_Data3.csv
+	rm Headbop_Data4.csv
+    echo "Your file had broken newline characters. The script should have fixed this; try committing again now. If future commits fail, make sure to save Headbop_Data.csv as Windows CSV" && exit 1
+fi
