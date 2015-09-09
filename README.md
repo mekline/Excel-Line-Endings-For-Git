@@ -7,9 +7,11 @@ This is a quick & dirty solution inspired by <a href="http://nicercode.github.io
 It's also the first git hook I wrote, so it's a straightforward example of how hooks work before interesting git checks get involved.  It works in the GithubForMac GUI (allowing the nice red/green line-by-line change highlighting to work properly!!!) 
 
 Usage: 
-Copy the file into .git/hooks/ in your repository folder. (Unhide hidden files if you can't find the .git folder.)  Every user must do this, hooks don't sync with repositories!
+Copy pre-commit (no file extension!) into .git/hooks/ in your repository folder. (Unhide hidden files if you can't find the .git folder.)  Every user must do this, hooks don't sync with repositories!  
 
-If some simple search-replaces of line endings diff the file at all, the cleaned-up file is saved over the broken one, the commit fails and you get a warning message reminding you of the annoying Excel workaround too.  Since the file has been updated nicely, the subsequent commit should go through.
+You have to make pre-commit executable for it to work. To do this, open a terminal in the same folder and enter <code>chmod +x pre-commit</code>
+
+You don't have to do anything special to invoke this.  When you commit a new version of the target file, pre-commit runs automatically. If some simple search-replaces of line endings diff the file at all, the cleaned-up file is saved over the broken one, the commit fails and you get a warning message reminding you of the annoying Excel workaround too.  Since the file has been updated nicely, a subsequent commit should go through.
 
 Bugs I know about:
 * In GithubForMac, sometimes after throwing the error the preview window doesn't show the updated file (i.e. it still shows all lines being deleted and replaced by the ugly single-line file.)  However, if you commit and then check the revision history, the correct/actual commit (of just the lines you really changed) is intact.  Clicking on any other repository and then back into the one your working in refreshes the display for whatever reason.
